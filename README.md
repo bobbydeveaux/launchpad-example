@@ -1,25 +1,25 @@
-# launchpad-example
+# stackramp-example
 
-A working example app deployed entirely by [Launchpad](https://github.com/bobbydeveaux/launchpad) — an open-source, zero-config deployment platform delivered as a GitHub Action.
+A working example app deployed entirely by [StackRamp](https://github.com/bobbydeveaux/stackramp) — an open-source, zero-config deployment platform delivered as a GitHub Action.
 
 ## What this repo demonstrates
 
 - A **React + Vite** frontend deployed to Firebase Hosting
 - A **Python FastAPI** backend deployed to Cloud Run
 - The frontend fetches live data from the backend at runtime
-- The entire deployment is driven by **8 lines of `launchpad.yaml`** and **9 lines of `deploy.yml`**
+- The entire deployment is driven by **8 lines of `stackramp.yaml`** and **9 lines of `deploy.yml`**
 - No GCP console. No Terraform. No secrets.
 
 ## Live site
 
-https://launchpad-example-prod.web.app
+https://stackramp-example-prod.web.app
 
 ## The config
 
-**`launchpad.yaml`** (the only app-level config needed):
+**`stackramp.yaml`** (the only app-level config needed):
 
 ```yaml
-name: launchpad-example
+name: stackramp-example
 
 frontend:
   framework: react
@@ -50,13 +50,13 @@ jobs:
       id-token: write
       contents: read
       pull-requests: write
-    uses: bobbydeveaux/launchpad/.github/workflows/platform.yml@main
+    uses: bobbydeveaux/stackramp/.github/workflows/platform.yml@main
     secrets: inherit
 ```
 
-## What Launchpad does on push
+## What StackRamp does on push
 
-1. Parses `launchpad.yaml`
+1. Parses `stackramp.yaml`
 2. Detects what changed (frontend, backend, or both)
 3. Provisions GCP infrastructure idempotently via Terraform (Firebase Hosting site + Cloud Run service)
 4. Builds and deploys only what changed
@@ -65,8 +65,8 @@ jobs:
 ## Repo structure
 
 ```
-launchpad-example/
-├── launchpad.yaml              ← platform config
+stackramp-example/
+├── stackramp.yaml              ← platform config
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml          ← one-line CI/CD
@@ -99,4 +99,4 @@ uvicorn main:app --reload --port 8080
 
 ## Platform
 
-Launchpad is at [github.com/bobbydeveaux/launchpad](https://github.com/bobbydeveaux/launchpad).
+StackRamp is at [github.com/bobbydeveaux/stackramp](https://github.com/bobbydeveaux/stackramp).

@@ -11,5 +11,5 @@ jobs:
       id-token: write       # required for WIF / GCP auth
       contents: read        # required to checkout code
       pull-requests: write  # required to post PR preview URLs
-    uses: bobbydeveaux/launchpad/.github/workflows/platform.yml@main
+    uses: bobbydeveaux/stackramp/.github/workflows/platform.yml@main
     secrets: inherit
