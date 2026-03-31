@@ -1,0 +1,11 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  deploy:
+    uses: bobbydeveaux/launchpad/.github/workflows/platform.yml@main
+    secrets: inherit

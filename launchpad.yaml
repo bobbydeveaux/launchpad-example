@@ -1,0 +1,8 @@
+name: launchpad-example
+
+frontend:
+  framework: react
+  dir: frontend
+  node_version: "20"
+
+database: false
