@@ -5,4 +5,9 @@ frontend:
   dir: frontend
   node_version: "20"
 
+backend:
+  language: python
+  dir: backend
+  port: 8080
+
 database: false
