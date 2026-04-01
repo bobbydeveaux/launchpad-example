@@ -44,6 +44,14 @@ export default function App() {
   return (
     <div className="page">
 
+      {/* ── Meta banner ── */}
+      <div className="meta-banner">
+        ✦ This site is deployed by StackRamp itself —{' '}
+        <a href="https://github.com/bobbydeveaux/stackramp-example/blob/main/stackramp.yaml" target="_blank" rel="noreferrer">
+          view stackramp.yaml
+        </a>
+      </div>
+
       {/* ── Nav ── */}
       <nav className="nav">
         <span className="nav-logo">🚀 StackRamp</span>
@@ -173,14 +181,19 @@ jobs:
 
       {/* ── Stack ── */}
       <section className="section section-alt">
-        <h2 className="section-title">This example app</h2>
-        <p className="section-sub">A real full-stack app deployed entirely by StackRamp.</p>
+        <h2 className="section-title">StackRamp deployed itself</h2>
+        <p className="section-sub">
+          You're looking at <strong>stackramp.io</strong> — the StackRamp marketing site, running on StackRamp.
+          No manual Terraform. No console clicks. Just a <code>stackramp.yaml</code> and a push.
+        </p>
         <div className="stack">
-          <div className="stack-item"><Badge>Frontend</Badge> React + Vite → Firebase Hosting</div>
-          <div className="stack-item"><Badge>Backend</Badge> Python FastAPI → Cloud Run</div>
-          <div className="stack-item"><Badge>Auth</Badge> Workload Identity Federation (no secrets)</div>
-          <div className="stack-item"><Badge>Config</Badge> 8 lines of stackramp.yaml</div>
-          <div className="stack-item"><Badge>Pipeline</Badge> 9 lines of deploy.yml</div>
+          <div className="stack-item"><Badge>Frontend</Badge> React + Vite → Firebase Hosting @ stackramp.io</div>
+          <div className="stack-item"><Badge>Backend</Badge> Python FastAPI → Cloud Run (powers the live clock above)</div>
+          <div className="stack-item"><Badge>DNS</Badge> Cloud DNS zone provisioned by bootstrap, A records by platform Terraform</div>
+          <div className="stack-item"><Badge>SSL</Badge> Issued automatically by Firebase / Let's Encrypt</div>
+          <div className="stack-item"><Badge>Auth</Badge> Workload Identity Federation — zero secrets stored anywhere</div>
+          <div className="stack-item"><Badge>Config</Badge> <a href="https://github.com/bobbydeveaux/stackramp-example/blob/main/stackramp.yaml" target="_blank" rel="noreferrer">8 lines of stackramp.yaml</a></div>
+          <div className="stack-item"><Badge>Pipeline</Badge> <a href="https://github.com/bobbydeveaux/stackramp-example/blob/main/.github/workflows/deploy.yml" target="_blank" rel="noreferrer">9 lines of deploy.yml</a></div>
         </div>
       </section>
 
