@@ -62,7 +62,7 @@ export default function App() {
 
       {/* ── Hero ── */}
       <section className="hero">
-        <p className="hero-eyebrow">Open-source · Zero config · One push</p>
+        <p className="hero-eyebrow">Open-source · Zero config · One push · Custom domains</p>
         <h1 className="hero-title">You commit code.<br />The platform handles the rest.</h1>
         <p className="hero-sub">
           StackRamp is a deployment platform delivered as a single GitHub Action.
