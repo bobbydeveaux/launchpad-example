@@ -46,8 +46,8 @@ export default function App() {
 
       {/* ── Nav ── */}
       <nav className="nav">
-        <span className="nav-logo">🚀 Launchpad</span>
-        <a className="nav-link" href="https://github.com/bobbydeveaux/launchpad" target="_blank" rel="noreferrer">
+        <span className="nav-logo">🚀 StackRamp</span>
+        <a className="nav-link" href="https://github.com/bobbydeveaux/stackramp" target="_blank" rel="noreferrer">
           GitHub →
         </a>
       </nav>
@@ -57,13 +57,13 @@ export default function App() {
         <p className="hero-eyebrow">Open-source · Zero config · One push</p>
         <h1 className="hero-title">You commit code.<br />The platform handles the rest.</h1>
         <p className="hero-sub">
-          Launchpad is a deployment platform delivered as a single GitHub Action.
-          Drop in a <code>launchpad.yaml</code>, add one workflow file, push — and your app
+          StackRamp is a deployment platform delivered as a single GitHub Action.
+          Drop in a <code>stackramp.yaml</code>, add one workflow file, push — and your app
           is live on GCP with Firebase Hosting and Cloud Run. No console. No Terraform. No secrets.
         </p>
         <div className="hero-actions">
-          <a className="btn btn-primary" href="https://github.com/bobbydeveaux/launchpad" target="_blank" rel="noreferrer">View on GitHub</a>
-          <a className="btn btn-secondary" href="https://github.com/bobbydeveaux/launchpad-example" target="_blank" rel="noreferrer">See this example</a>
+          <a className="btn btn-primary" href="https://github.com/bobbydeveaux/stackramp" target="_blank" rel="noreferrer">View on GitHub</a>
+          <a className="btn btn-secondary" href="https://github.com/bobbydeveaux/stackramp-example" target="_blank" rel="noreferrer">See this example</a>
         </div>
         <LiveTime />
       </section>
@@ -84,7 +84,7 @@ backend:
   port: 8080
 
 database: false`}>
-            Drop a <code>launchpad.yaml</code> in your repo root. Declare what you have — frontend, backend, database. No cloud provider details, no ARNs, no project numbers.
+            Drop a <code>stackramp.yaml</code> in your repo root. Declare what you have — frontend, backend, database. No cloud provider details, no ARNs, no project numbers.
           </Step>
 
           <Step n="2" title="Add one workflow file" code={`# .github/workflows/deploy.yml
@@ -94,14 +94,14 @@ jobs:
       id-token: write
       contents: read
       pull-requests: write
-    uses: bobbydeveaux/launchpad/\
+    uses: bobbydeveaux/stackramp/\
 .github/workflows/platform.yml@main
     secrets: inherit`}>
             That's your entire CI/CD pipeline. The platform workflow handles everything else — building, provisioning, deploying, PR previews.
           </Step>
 
           <Step n="3" title="Push">
-            Launchpad detects what changed, builds only what's needed, provisions cloud infrastructure idempotently, and deploys. URLs are posted back to your PR as a comment.
+            StackRamp detects what changed, builds only what's needed, provisions cloud infrastructure idempotently, and deploys. URLs are posted back to your PR as a comment.
           </Step>
         </div>
       </section>
@@ -142,7 +142,7 @@ jobs:
           <div className="arch-col">
             <h4>Developer repo</h4>
             <div className="arch-items">
-              <div className="arch-item">launchpad.yaml</div>
+              <div className="arch-item">stackramp.yaml</div>
               <div className="arch-item">.github/workflows/deploy.yml</div>
               <div className="arch-item">frontend/</div>
               <div className="arch-item">backend/</div>
@@ -150,7 +150,7 @@ jobs:
           </div>
           <div className="arch-arrow">→</div>
           <div className="arch-col">
-            <h4>Launchpad platform</h4>
+            <h4>StackRamp platform</h4>
             <div className="arch-items">
               <div className="arch-item">Parse config</div>
               <div className="arch-item">Detect changes</div>
@@ -174,12 +174,12 @@ jobs:
       {/* ── Stack ── */}
       <section className="section section-alt">
         <h2 className="section-title">This example app</h2>
-        <p className="section-sub">A real full-stack app deployed entirely by Launchpad.</p>
+        <p className="section-sub">A real full-stack app deployed entirely by StackRamp.</p>
         <div className="stack">
           <div className="stack-item"><Badge>Frontend</Badge> React + Vite → Firebase Hosting</div>
           <div className="stack-item"><Badge>Backend</Badge> Python FastAPI → Cloud Run</div>
           <div className="stack-item"><Badge>Auth</Badge> Workload Identity Federation (no secrets)</div>
-          <div className="stack-item"><Badge>Config</Badge> 8 lines of launchpad.yaml</div>
+          <div className="stack-item"><Badge>Config</Badge> 8 lines of stackramp.yaml</div>
           <div className="stack-item"><Badge>Pipeline</Badge> 9 lines of deploy.yml</div>
         </div>
       </section>
@@ -187,9 +187,9 @@ jobs:
       {/* ── Footer ── */}
       <footer className="footer">
         <p>
-          Built with <a href="https://github.com/bobbydeveaux/launchpad" target="_blank" rel="noreferrer">Launchpad</a>
+          Built with <a href="https://github.com/bobbydeveaux/stackramp" target="_blank" rel="noreferrer">StackRamp</a>
           {' · '}
-          <a href="https://github.com/bobbydeveaux/launchpad-example" target="_blank" rel="noreferrer">View source</a>
+          <a href="https://github.com/bobbydeveaux/stackramp-example" target="_blank" rel="noreferrer">View source</a>
         </p>
       </footer>
 
