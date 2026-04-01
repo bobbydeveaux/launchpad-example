@@ -29,4 +29,4 @@ def get_time():
 
 @app.get("/healthz")
 def healthz():
-    return {"status": "ok"}
+    return {"status": "ok", "region": os.getenv("REGION", "unknown")}
