@@ -10,6 +10,4 @@ backend:
   dir: backend
   port: 8080
 
-database: false
-
 domain: stackramp.io
