@@ -62,7 +62,7 @@ export default function App() {
 
       {/* ── Hero ── */}
       <section className="hero">
-        <p className="hero-eyebrow">Open-source · Zero config · One push · Custom domains</p>
+        <p className="hero-eyebrow">Open-source · Zero config · One push · Custom domains · SSO</p>
         <h1 className="hero-title">You commit code.<br />The platform handles the rest.</h1>
         <p className="hero-sub">
           StackRamp is a deployment platform delivered as a single GitHub Action.
@@ -86,14 +86,16 @@ export default function App() {
 
 frontend:
   framework: react
+  sso: true         # optional — serve via Cloud Run + IAP instead of Firebase
 
 backend:
   language: go
+  sso: true         # optional — restrict to IAP-authenticated users
 
 database: postgres  # optional — omit or set false to skip
 
 storage: gcs        # optional — provisions a GCS bucket`}>
-            Drop a <code>stackramp.yaml</code> in your repo root. Declare what you have — frontend, backend, database, storage. No cloud provider details, no ARNs, no project numbers.
+            Drop a <code>stackramp.yaml</code> in your repo root. Declare what you have — frontend, backend, database, storage, SSO. No cloud provider details, no ARNs, no project numbers.
           </Step>
 
           <Step n="2" title="Add one workflow file" code={`# .github/workflows/deploy.yml
@@ -151,6 +153,11 @@ jobs:
             <p>Set <code>storage: gcs</code> to get a provisioned Cloud Storage bucket with the bucket name injected as <code>GCS_BUCKET_NAME</code>.</p>
           </div>
           <div className="card">
+            <div className="card-icon">🔒</div>
+            <h4>SSO via IAP</h4>
+            <p>Set <code>sso: true</code> and the platform provisions a Global HTTPS Load Balancer with Google Identity-Aware Proxy. Only authenticated users get in — no app-level auth code needed.</p>
+          </div>
+          <div className="card">
             <div className="card-icon">👁️</div>
             <h4>PR Previews</h4>
             <p>Every pull request gets its own preview deployment. The URL is posted as a PR comment automatically.</p>
@@ -193,6 +200,7 @@ jobs:
             <div className="arch-items">
               <div className="arch-item">Firebase Hosting</div>
               <div className="arch-item">Cloud Run</div>
+              <div className="arch-item">HTTPS Load Balancer + IAP</div>
               <div className="arch-item">Cloud SQL (Postgres)</div>
               <div className="arch-item">Secret Manager</div>
               <div className="arch-item">Artifact Registry</div>
