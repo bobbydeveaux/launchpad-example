@@ -43,6 +43,7 @@ pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
   z-index: 10;
 }
 .nav-logo { font-weight: 700; font-size: 1.1rem; }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
 .nav-link { font-size: 0.9rem; font-weight: 500; color: var(--brand); }
 
 /* ── Hero ── */
