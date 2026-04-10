@@ -20,7 +20,7 @@ storage: gcs`}</Code>
       <h2>Bucket naming</h2>
       <p>
         Buckets follow the convention <code>{'<project>-<app>-<env>'}</code>.
-        For example: <code>bj-platform-dev-my-app-dev</code>.
+        For example: <code>my-project-my-app-dev</code>.
       </p>
 
       <h2>Accessing the bucket</h2>
