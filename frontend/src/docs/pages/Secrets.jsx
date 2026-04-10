@@ -59,8 +59,9 @@ platform_secrets = [
 
       <h2>Database secrets</h2>
       <p>
-        When <code>database: postgres</code> is set, the <code>DATABASE_SECRET_NAME</code> env var
-        is automatically injected pointing to the Secret Manager secret containing the connection URL.
+        When <code>database: postgres</code> is set, the full connection string is mounted from
+        Secret Manager directly as the <code>DATABASE_URL</code> env var in Cloud Run. Your app
+        just reads <code>DATABASE_URL</code> — no Secret Manager API calls needed.
         This secret is created and managed by the platform — no manual setup needed.
       </p>
     </DocPage>
