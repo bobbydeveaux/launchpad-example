@@ -5,10 +5,23 @@ export default function Database() {
     <DocPage slug="database">
       <p>
         Set <code>database: postgres</code> in <code>stackramp.yaml</code> to provision
-        a Cloud SQL Postgres instance connected to your Cloud Run backend.
+        a new database within the platform's Cloud SQL instance, connected to your Cloud Run backend.
       </p>
 
-      <h2>Configuration</h2>
+      <h2>Prerequisites</h2>
+      <p>
+        The platform operator provisions a shared Cloud SQL Postgres instance during bootstrap
+        by setting <code>enable_postgres = true</code> in the bootstrap <code>tfvars</code>:
+      </p>
+      <Code>{`# providers/gcp/terraform/bootstrap/dev.tfvars
+enable_postgres = true
+postgres_tier   = "db-f1-micro"`}</Code>
+      <p>
+        The <code>STACKRAMP_CLOUDSQL_CONNECTION</code> GitHub Variable must also be set
+        (format: <code>project:region:instance</code>).
+      </p>
+
+      <h2>App configuration</h2>
       <Code>{`name: my-app
 
 backend:
@@ -19,28 +32,26 @@ database: postgres`}</Code>
 
       <h2>What gets provisioned</h2>
       <ul>
-        <li>Cloud SQL Postgres instance (shared across environments)</li>
-        <li>Per-environment database within the instance</li>
-        <li>Connection string stored in Secret Manager</li>
+        <li>A new database within the shared Cloud SQL instance (per environment)</li>
+        <li>A database user and password stored in Secret Manager</li>
         <li>Cloud Run connected via Cloud SQL Auth Proxy (Unix socket)</li>
+        <li>The full DSN injected directly as an env var</li>
       </ul>
 
       <h2>Accessing the database</h2>
       <p>
-        The <code>DATABASE_SECRET_NAME</code> env var points to the Secret Manager secret
-        containing your connection URL. Read it at startup:
+        The <code>DATABASE_URL</code> env var is injected directly into your Cloud Run service
+        with the full connection string. Just read it from the environment — no need to call
+        the Secret Manager API yourself:
       </p>
       <Code>{`import os
-from google.cloud import secretmanager
 
-client = secretmanager.SecretManagerServiceClient()
-secret_name = os.environ["DATABASE_SECRET_NAME"]
-response = client.access_secret_version(name=f"{secret_name}/versions/latest")
-database_url = response.payload.data.decode("utf-8")`}</Code>
+database_url = os.environ["DATABASE_URL"]
+# e.g. postgresql://user:pass@/dbname?host=/cloudsql/project:region:instance`}</Code>
 
       <Callout type="info">
-        <strong>Prerequisite:</strong> The <code>STACKRAMP_CLOUDSQL_CONNECTION</code> GitHub Variable
-        must be set to the Cloud SQL connection name (format: <code>project:region:instance</code>).
+        The platform handles secret mounting via Cloud Run's native secret references.
+        Your app code only needs to read the <code>DATABASE_URL</code> environment variable.
       </Callout>
 
       <h2>Migrations</h2>
