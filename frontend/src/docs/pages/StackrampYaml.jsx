@@ -23,6 +23,7 @@ backend:
   port: 8080                  # listen port (default: 8080)
   memory: 512Mi               # Cloud Run memory (default: 512Mi)
   cpu: "1"                    # Cloud Run CPU (default: 1)
+  min_instances: 0            # min warm instances (default: 0)
   sso: false                  # put behind Google IAP
 
 domain: my-app.yourdomain.com # optional custom domain
@@ -62,6 +63,7 @@ storage: false                # false | gcs`}</Code>
           ['port', 'number', '8080', 'Listen port'],
           ['memory', 'string', '512Mi', 'Cloud Run memory limit'],
           ['cpu', 'string', '1', 'Cloud Run vCPU count'],
+          ['min_instances', 'number', '0', 'Minimum warm Cloud Run instances (0 = scale to zero)'],
           ['sso', 'boolean', 'false', 'Put behind IAP'],
         ]}
       />

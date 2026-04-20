@@ -7,8 +7,8 @@ export default function CustomDomains() {
 
       <h2>How it works</h2>
       <ul>
-        <li><strong>Subdomain</strong> (<code>app.yourdomain.com</code>): CNAME → Firebase site, SSL auto-provisioned</li>
-        <li><strong>Apex domain</strong> (<code>yourdomain.com</code>): A records → Firebase's load balancer IPs</li>
+        <li><strong>Standard apps:</strong> Subdomain CNAME → Firebase Hosting, apex A records → Firebase IPs</li>
+        <li><strong>SSO apps:</strong> CNAME → <code>ghs.googlehosted.com</code> via Cloud Run domain mapping, automatic SSL</li>
       </ul>
 
       <h2>Dev vs Prod</h2>

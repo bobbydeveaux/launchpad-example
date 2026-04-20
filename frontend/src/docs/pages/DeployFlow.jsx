@@ -22,7 +22,7 @@ export default function DeployFlow() {
   │ Custom domain + DNS records     │
   │ Cloud Run service shell         │
   │ GCS bucket (if storage: gcs)    │
-  │ IAP + HTTPS LB (if sso: true)  │
+  │ IAP on Cloud Run (if sso: true) │
   └─────────────────────────────────┘
         │
         ▼

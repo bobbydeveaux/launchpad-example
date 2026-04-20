@@ -32,9 +32,9 @@ fetch('/api/users')
 
       <h2>SSO mode</h2>
       <p>
-        When <code>sso: true</code>, the same routing applies — the HTTPS Load Balancer
-        forwards <code>/api/*</code> to the backend Cloud Run service and everything else
-        to the frontend (nginx) Cloud Run service.
+        When <code>sso: true</code>, the same routing applies — the frontend nginx container
+        reverse-proxies <code>/api/*</code> to the backend Cloud Run service. Both services
+        share a single origin, so no CORS configuration is needed.
       </p>
     </DocPage>
   )
