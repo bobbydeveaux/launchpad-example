@@ -71,6 +71,30 @@ cp terraform.tfvars.example dev.tfvars
         before deploying any apps with custom domains.
       </Callout>
 
+      <h2>Bootstrap options</h2>
+      <Table
+        headers={['Variable', 'Type', 'Default', 'Description']}
+        rows={[
+          ['platform_project', 'string', '(required)', 'GCP project ID'],
+          ['github_owner', 'string', 'bobbydeveaux', 'GitHub org or username'],
+          ['environment', 'string', 'dev', 'dev or prod'],
+          ['region', 'string', 'europe-west1', 'GCP region — must support domain mappings for SSO'],
+          ['base_domain', 'string', '(none)', 'Domain for apps (e.g. stackramp.io)'],
+          ['create_dns_zone', 'bool', 'true', 'Create Cloud DNS zone for base_domain'],
+          ['enable_postgres', 'bool', 'false', 'Provision shared Cloud SQL Postgres instance'],
+          ['postgres_private_ip', 'bool', 'false', 'Use private IP for Cloud SQL (requires VPC connector at ~£52/month). When false, uses public IP with Cloud SQL Auth Proxy — no VPC cost'],
+          ['postgres_tier', 'string', 'db-f1-micro', 'Cloud SQL machine tier'],
+          ['iap_allowed_domain', 'string', '(none)', 'Google Workspace domain for IAP access control'],
+          ['platform_secrets', 'list(string)', '[]', 'Secret names to create in Secret Manager'],
+        ]}
+      />
+
+      <Callout type="info">
+        <strong>Cost tip:</strong> With <code>postgres_private_ip = false</code> (default), Cloud SQL uses
+        public IP and connects via the Cloud SQL Auth Proxy — no VPC or connector needed. This saves ~£52/month.
+        Only set <code>postgres_private_ip = true</code> if your org policy restricts public IPs on Cloud SQL.
+      </Callout>
+
       <h2>Workload Identity Federation</h2>
       <p>
         The bootstrap creates a Workload Identity Federation (WIF) pool that trusts GitHub Actions
