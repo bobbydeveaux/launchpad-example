@@ -25,6 +25,7 @@ export default function EnvVars() {
         rows={[
           ['GCS_BUCKET', 'storage: gcs', 'GCS bucket name for the environment'],
           ['DATABASE_URL', 'database: postgres', 'Full DSN connection string (mounted from Secret Manager)'],
+          ['BACKEND_URL', 'sso: true + has backend', 'Backend Cloud Run URL — injected into SSO frontend for the Go proxy to route /api/* calls'],
         ]}
       />
 

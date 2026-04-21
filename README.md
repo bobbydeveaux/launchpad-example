@@ -116,6 +116,8 @@ domain: myapp.io
 
 ### SSO / Identity-Aware Proxy (IAP)
 - **Google IAP** — add `sso: true` to your frontend or backend config to deploy behind IAP; only users in your allowed domain can access the app
+- **Restrictive org support** — works on GCP orgs with `iam.allowedPolicyMemberDomains` constraints via VPC connector and custom frontend service accounts
+- **Go reverse proxy** — SSO frontends use a Go proxy that handles `/api/*` routing with cached identity tokens for service-to-service auth (no IAP header leakage)
 - **User identity in your app** — IAP injects headers into every request that reaches your service:
   - `X-Goog-Authenticated-User-Email` — the authenticated user's email (e.g. `accounts.google.com:alice@example.com`)
   - `X-Goog-Authenticated-User-ID` — a stable user identifier

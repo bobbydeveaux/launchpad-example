@@ -62,6 +62,8 @@ cp terraform.tfvars.example dev.tfvars
           ['STACKRAMP_BASE_DOMAIN', 'Base domain (e.g. yourdomain.com)'],
           ['STACKRAMP_CLOUDSQL_CONNECTION', 'Cloud SQL connection name — only if enable_postgres was set'],
           ['STACKRAMP_IAP_DOMAIN', 'Google Workspace domain — only if iap_allowed_domain was set'],
+          ['STACKRAMP_VPC_CONNECTOR', 'VPC connector name — only if postgres_private_ip was set'],
+          ['STACKRAMP_FRONTEND_SA', 'Frontend SA email — only for restrictive orgs with SSO'],
         ]}
       />
 

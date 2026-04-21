@@ -43,6 +43,33 @@ export default function Troubleshooting() {
         Check that <code>STACKRAMP_IAP_DOMAIN</code> is set correctly. If unset, any Google account
         is allowed. If set, only accounts from that domain can access the app.
       </p>
+
+      <h2>SSO backend returning 401</h2>
+      <p>
+        If your SSO app's <code>/api/*</code> calls return 401, check these in order:
+      </p>
+      <ol>
+        <li><strong>Identity token audience:</strong> The Go proxy fetches an identity token
+          with the backend's Cloud Run URL as the audience. Check the <code>BACKEND_URL</code>{' '}
+          env var on the frontend Cloud Run service matches the backend's URL exactly.</li>
+        <li><strong>IAM binding:</strong> The frontend service account needs{' '}
+          <code>roles/run.invoker</code> on the backend. Check with{' '}
+          <Code>{`gcloud run services get-iam-policy <app>-<env> \\
+  --region=<region> --project=<project>`}</Code></li>
+        <li><strong>Restrictive org + no VPC connector:</strong> If your org blocks{' '}
+          <code>allUsers</code> and you haven't set <code>STACKRAMP_VPC_CONNECTOR</code>,
+          the backend's <code>--allow-unauthenticated</code> flag is silently ignored.
+          Set <code>STACKRAMP_VPC_CONNECTOR</code> and <code>STACKRAMP_FRONTEND_SA</code> to
+          use the VPC-based auth path.</li>
+      </ol>
+
+      <h2>Terraform state lock error</h2>
+      <p>
+        If two deploys run simultaneously for the same app, one may fail with a state lock error.
+        Re-trigger the failed deploy — the lock is released automatically when the other run finishes.
+        If the lock is stuck, manually unlock:
+      </p>
+      <Code>{`terraform force-unlock <LOCK_ID>`}</Code>
     </DocPage>
   )
 }

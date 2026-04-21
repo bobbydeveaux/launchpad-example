@@ -32,10 +32,20 @@ fetch('/api/users')
 
       <h2>SSO mode</h2>
       <p>
-        When <code>sso: true</code>, the same routing applies — the frontend nginx container
-        reverse-proxies <code>/api/*</code> to the backend Cloud Run service. Both services
-        share a single origin, so no CORS configuration is needed.
+        When <code>sso: true</code>, the frontend is served from Cloud Run (not Firebase Hosting).
+        A Go reverse proxy handles <code>/api/*</code> routing to the backend Cloud Run service,
+        automatically adding a service-to-service identity token for authentication.
+        Both services share a single origin, so no CORS configuration is needed.
       </p>
+      <Code>{`https://my-app.yourdomain.com/           → Cloud Run (Go proxy, IAP-protected)
+https://my-app.yourdomain.com/api/...    → Cloud Run (backend, via identity token)`}</Code>
+
+      <Callout type="info">
+        <strong>VPC connector:</strong> On restrictive GCP orgs, the backend uses{' '}
+        <code>--ingress=internal</code> and the frontend routes through a VPC connector.
+        The Go proxy handles this transparently — your frontend code still uses the same
+        relative <code>/api/</code> paths.
+      </Callout>
     </DocPage>
   )
 }
