@@ -49,6 +49,32 @@ backend:
 database: postgres
 storage: gcs`}</Code>
 
+      <h3>Backend with an MCP server</h3>
+      <Code>{`name: my-app
+
+backend:
+  language: python
+
+mcp:
+  language: go
+  allowed_service_accounts:
+    - agentops@my-project.iam.gserviceaccount.com
+
+database: postgres`}</Code>
+
+      <h3>Kubernetes (Helm) app</h3>
+      <Code>{`name: my-app
+
+domain: my-app.yourdomain.com
+
+kubernetes:
+  chart: deploy/helm/my-app
+  images:
+    - name: my-app-api
+      dockerfile: Dockerfile.api
+
+database: postgres`}</Code>
+
       <h2>2. .github/workflows/deploy.yml</h2>
       <Code>{`name: Deploy
 

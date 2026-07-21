@@ -14,7 +14,12 @@ export default function Dockerfile() {
         <li><strong>Python</strong> — installs <code>requirements.txt</code>, runs with gunicorn</li>
         <li><strong>Go</strong> — multi-stage build, compiles a static binary</li>
         <li><strong>Node</strong> — installs <code>package.json</code>, runs with node</li>
+        <li><strong>Rust</strong> — multi-stage build, compiles a release binary</li>
       </ul>
+      <p>
+        The same convention applies to MCP servers: a <code>Dockerfile</code> in the{' '}
+        <code>mcp.dir</code> directory overrides the platform one for the MCP service.
+      </p>
 
       <h2>Custom Dockerfile</h2>
       <p>

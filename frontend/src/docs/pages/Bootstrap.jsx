@@ -64,6 +64,11 @@ cp terraform.tfvars.example dev.tfvars
           ['STACKRAMP_IAP_DOMAIN', 'Google Workspace domain — only if iap_allowed_domain was set'],
           ['STACKRAMP_VPC_CONNECTOR', 'VPC connector name — only if postgres_private_ip was set'],
           ['STACKRAMP_FRONTEND_SA', 'Frontend SA email — only for restrictive orgs with SSO'],
+          ['STACKRAMP_GKE_CLUSTER', 'GKE cluster name — only if enable_gke was set'],
+          ['STACKRAMP_GKE_LOCATION', 'GKE cluster zone — only if enable_gke was set'],
+          ['STACKRAMP_GKE_GATEWAY_IP', 'Shared Gateway global IP — only if enable_gke + base_domain were set'],
+          ['STACKRAMP_GKE_GATEWAY_NAME', 'Shared Gateway name — only if enable_gke + base_domain were set'],
+          ['STACKRAMP_GKE_GATEWAY_NAMESPACE', 'Shared Gateway namespace — only if enable_gke + base_domain were set'],
         ]}
       />
 
@@ -88,8 +93,23 @@ cp terraform.tfvars.example dev.tfvars
           ['postgres_tier', 'string', 'db-f1-micro', 'Cloud SQL machine tier'],
           ['iap_allowed_domain', 'string', '(none)', 'Google Workspace domain for IAP access control'],
           ['platform_secrets', 'list(string)', '[]', 'Secret names to create in Secret Manager'],
+          ['machine_consumers', 'list(string)', '[]', 'Service accounts for systems that call apps\' MCP servers (e.g. ["agentops"])'],
+          ['machine_consumer_keys', 'bool', 'false', 'Store a JSON key per machine consumer in Secret Manager (machine-consumer-<name>-key)'],
+          ['enable_gke', 'bool', 'false', 'Provision shared GKE cluster + External Secrets Operator for kubernetes: apps'],
+          ['gke_zone', 'string', 'europe-west1-b', 'GKE cluster zone — must be a zone, not a region'],
+          ['gke_machine_type', 'string', 'e2-standard-8', 'GKE node machine type — the way to scale the single-node cluster'],
+          ['gke_node_count', 'number', '1', 'Node count — must stay 1 (node-local hostPath volumes)'],
+          ['gke_release_channel', 'string', 'REGULAR', 'GKE release channel: RAPID, REGULAR, or STABLE'],
+          ['eso_chart_version', 'string', '2.7.0', 'External Secrets Operator Helm chart version'],
         ]}
       />
+
+      <Callout type="info">
+        <strong>GKE two-phase apply:</strong> with <code>enable_gke = true</code>, the helm and
+        kubectl providers need the cluster endpoint before it exists on a cold apply.{' '}
+        <code>bootstrap.sh</code> handles this automatically — it applies the cluster and node pool
+        first, then everything else. Re-runs are a normal single apply.
+      </Callout>
 
       <Callout type="info">
         <strong>Cost tip:</strong> With <code>postgres_private_ip = false</code> (default), Cloud SQL uses

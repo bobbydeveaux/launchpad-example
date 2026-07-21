@@ -63,6 +63,36 @@ export default function Troubleshooting() {
           use the VPC-based auth path.</li>
       </ol>
 
+      <h2>MCP server returning 401/403 to a machine consumer</h2>
+      <p>
+        Check these in order: the consumer's SA email is listed in{' '}
+        <code>mcp.allowed_service_accounts</code> (and shows up in the service's{' '}
+        <code>MCP_SERVICE_ACCOUNTS</code> env var); the ID token's audience is the MCP service's
+        exact Cloud Run URL; and for private servers, the caller's identity is covered by the{' '}
+        <code>roles/run.invoker</code> binding. If external OAuth clients (Claude Code, MCP
+        Inspector) can't reach the endpoint at all, the server needs <code>mcp.public: true</code>{' '}
+        for OAuth discovery.
+      </p>
+
+      <h2>Bootstrap: "Kubernetes cluster unreachable"</h2>
+      <p>
+        You changed a force-new attribute on the GKE cluster (e.g. <code>gke_zone</code>), so
+        Terraform wants to replace it, but the helm/kubectl providers can't reach the old endpoint.
+        Remove the in-cluster resources from state and re-run — they're recreated on the new cluster:
+      </p>
+      <Code>{`terraform state rm 'helm_release.external_secrets[0]' \\
+  'kubectl_manifest.cluster_secret_store[0]'
+./bootstrap.sh dev`}</Code>
+
+      <h2>Helm release fails with RBAC "attempting to grant permissions not currently held"</h2>
+      <p>
+        Kubernetes' RBAC escalation check resolves permissions from native RBAC only, not from GCP
+        IAM. The bootstrap binds the CI/CD service account to the built-in <code>edit</code>{' '}
+        ClusterRole for exactly this reason — if you see this error, the platform bootstrap is out of
+        date. Re-run <code>./bootstrap.sh</code>. Charts also can't grant more than <code>edit</code>{' '}
+        allows.
+      </p>
+
       <h2>Terraform state lock error</h2>
       <p>
         If two deploys run simultaneously for the same app, one may fail with a state lock error.

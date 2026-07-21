@@ -30,6 +30,11 @@ export default function GithubVariables() {
           ['STACKRAMP_CLOUDSQL_CONNECTION', 'Database apps', 'Cloud SQL connection name (project:region:instance)'],
           ['STACKRAMP_VPC_CONNECTOR', 'SSO on restrictive orgs', 'Serverless VPC connector name — routes frontend traffic to internal backend via VPC'],
           ['STACKRAMP_FRONTEND_SA', 'SSO on restrictive orgs', 'Custom service account email for SSO frontend Cloud Run services'],
+          ['STACKRAMP_GKE_CLUSTER', 'Kubernetes apps', 'Shared GKE cluster name (e.g. stackramp-dev)'],
+          ['STACKRAMP_GKE_LOCATION', 'Kubernetes apps', 'GKE cluster zone (e.g. europe-west1-b)'],
+          ['STACKRAMP_GKE_GATEWAY_IP', 'Kubernetes apps with domains', 'Global IP of the shared Gateway — used for DNS A-records'],
+          ['STACKRAMP_GKE_GATEWAY_NAME', 'Kubernetes apps with domains', 'Shared Gateway resource name (stackramp)'],
+          ['STACKRAMP_GKE_GATEWAY_NAMESPACE', 'Kubernetes apps with domains', 'Namespace the shared Gateway lives in (stackramp-gateway)'],
         ]}
       />
 

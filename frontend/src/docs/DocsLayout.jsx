@@ -14,6 +14,8 @@ import Sso from './pages/Sso.jsx'
 import Storage from './pages/Storage.jsx'
 import Secrets from './pages/Secrets.jsx'
 import Database from './pages/Database.jsx'
+import Mcp from './pages/Mcp.jsx'
+import Kubernetes from './pages/Kubernetes.jsx'
 import StackrampYaml from './pages/StackrampYaml.jsx'
 import EnvVars from './pages/EnvVars.jsx'
 import GithubVariables from './pages/GithubVariables.jsx'
@@ -32,6 +34,8 @@ const pageComponents = {
   'storage': Storage,
   'secrets': Secrets,
   'database': Database,
+  'mcp': Mcp,
+  'kubernetes': Kubernetes,
   'stackramp-yaml': StackrampYaml,
   'env-vars': EnvVars,
   'github-variables': GithubVariables,

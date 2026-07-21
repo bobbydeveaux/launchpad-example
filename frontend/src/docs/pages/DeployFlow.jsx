@@ -20,16 +20,25 @@ export default function DeployFlow() {
   ┌─────────────────────────────────┐
   │ Firebase Hosting site           │
   │ Custom domain + DNS records     │
-  │ Cloud Run service shell         │
+  │ Cloud Run service shell(s)      │
   │ GCS bucket (if storage: gcs)    │
   │ IAP on Cloud Run (if sso: true) │
+  │ MCP service shell (if mcp:)     │
+  │ k8s namespace secrets + DNS     │
+  │   A-record (if kubernetes:)     │
   └─────────────────────────────────┘
         │
         ▼
   deploy-backend → deploy-frontend
+  deploy-mcp (if mcp:)
+  deploy-kubernetes (if kubernetes:)
         │
         ▼ (main branch only)
-  deploy-backend-prod → deploy-frontend-prod`}</Code>
+  same jobs again for prod`}</Code>
+      <p>
+        Apps that only declare <code>mcp:</code> or <code>kubernetes:</code> are valid — the
+        frontend/backend jobs are simply skipped.
+      </p>
 
       <h2>Branch behaviour</h2>
       <Table

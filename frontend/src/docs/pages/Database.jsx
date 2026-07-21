@@ -63,10 +63,44 @@ database_url = os.environ["DATABASE_URL"]
 
       <h2>Migrations</h2>
       <p>
-        Database migrations are an app-level concern. StackRamp provisions the database
-        but does not run migrations automatically. Run them as part of your backend startup
-        or as a separate CI step.
+        StackRamp can run database migrations <strong>once per deploy</strong>, before the new
+        revision receives traffic. Migrations execute as a Cloud Run Job using the same Docker
+        image that's about to be deployed — so your migration tooling and app code are always in sync.
       </p>
+      <p>
+        Add the <code>migrate</code> field to your <code>stackramp.yaml</code>:
+      </p>
+      <Code>{`name: my-app
+
+backend:
+  language: python
+
+database: postgres
+migrate: "alembic upgrade head"   # explicit command`}</Code>
+      <p>
+        Or use <code>migrate: true</code> to use the language default:
+      </p>
+      <ul>
+        <li><strong>Python:</strong> <code>alembic upgrade head</code></li>
+        <li><strong>Node:</strong> <code>npx prisma migrate deploy</code></li>
+        <li><strong>Go:</strong> <code>atlas migrate apply --url "$DATABASE_URL"</code></li>
+      </ul>
+
+      <Callout type="info">
+        <strong>How it works:</strong> The platform creates a Cloud Run Job named{' '}
+        <code>{'{app}'}-migrate-{'{env}'}</code> that runs your migration command inside the
+        newly built Docker image. It has the same Cloud SQL connectivity and Secret Manager
+        access as your backend service. The job runs with <code>--wait</code> — if the migration
+        fails, the deploy is aborted and your current revision keeps serving.
+      </Callout>
+
+      <Callout type="warning">
+        <strong>Write backward-compatible migrations.</strong> If a migration succeeds but the
+        subsequent deploy fails (e.g. health check timeout), the database will have advanced but
+        the old code will still be serving. Always use additive migrations: new tables, new columns
+        with defaults, new indexes. Avoid dropping columns or renaming tables in the same deploy
+        as the code that stops using them.
+      </Callout>
     </DocPage>
   )
 }

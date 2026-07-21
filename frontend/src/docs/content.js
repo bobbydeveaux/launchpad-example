@@ -20,6 +20,8 @@ export const sections = [
       { slug: 'storage', title: 'GCS Storage', description: 'Cloud Storage buckets' },
       { slug: 'secrets', title: 'Secrets', description: 'Secret Manager injection' },
       { slug: 'database', title: 'Database', description: 'Cloud SQL Postgres' },
+      { slug: 'mcp', title: 'MCP Servers', description: 'Deploy a Model Context Protocol server' },
+      { slug: 'kubernetes', title: 'Kubernetes (GKE)', description: 'Helm releases on the shared cluster' },
     ],
   },
   {
