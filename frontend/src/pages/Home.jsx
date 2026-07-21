@@ -65,7 +65,7 @@ export default function Home() {
 
       {/* ── Hero ── */}
       <section className="hero">
-        <p className="hero-eyebrow">Open-source · Zero config · One push · Custom domains · SSO</p>
+        <p className="hero-eyebrow">Open-source · Zero config · One push · Custom domains · SSO · MCP · Kubernetes</p>
         <h1 className="hero-title">You commit code.<br />The platform handles the rest.</h1>
         <p className="hero-sub">
           StackRamp is a deployment platform delivered as a single GitHub Action.
@@ -161,6 +161,16 @@ jobs:
             <p>Set <code>sso: true</code> and the platform provisions a Global HTTPS Load Balancer with Google Identity-Aware Proxy. Only authenticated users get in — no app-level auth code needed.</p>
           </div>
           <div className="card">
+            <div className="card-icon">🤖</div>
+            <h4>MCP Servers</h4>
+            <p>Add an <code>mcp:</code> block and get a Model Context Protocol server as its own Cloud Run service — with machine-to-machine auth via Google-signed ID tokens, no IAP, no <code>allUsers</code>.</p>
+          </div>
+          <div className="card">
+            <div className="card-icon">☸️</div>
+            <h4>Kubernetes (GKE)</h4>
+            <p>Need a real cluster? Add a <code>kubernetes:</code> block and your Helm chart deploys to the shared GKE cluster — images built and pushed, secrets via External Secrets Operator, HTTPS via a shared Gateway with wildcard certs.</p>
+          </div>
+          <div className="card">
             <div className="card-icon">👁️</div>
             <h4>PR Previews</h4>
             <p>Every pull request gets its own isolated preview deployment with a unique URL, automatically cleaned up on merge.</p>
@@ -203,6 +213,7 @@ jobs:
             <div className="arch-items">
               <div className="arch-item">Firebase Hosting</div>
               <div className="arch-item">Cloud Run</div>
+              <div className="arch-item">GKE (shared cluster)</div>
               <div className="arch-item">HTTPS Load Balancer + IAP</div>
               <div className="arch-item">Cloud SQL (Postgres)</div>
               <div className="arch-item">Secret Manager</div>
