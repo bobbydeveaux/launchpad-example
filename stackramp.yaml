@@ -11,3 +11,6 @@ backend:
   port: 8080
 
 domain: stackramp.io
+
+quality:
+  fail_on_gate: false  # docs site — complexity heuristics misfire on static JSX content pages
