@@ -61,6 +61,65 @@ backend:
         layer picks up the IAP JWT instead of the service-to-service identity token, causing 401s.
       </Callout>
 
+      <h2>Identity &amp; proxy headers</h2>
+      <p>
+        IAP authenticates the user at the frontend and attaches identity headers. What your{' '}
+        <strong>backend</strong> receives on <code>/api/*</code> depends on which proxy path
+        your org uses:
+      </p>
+
+      <h3>Restrictive orgs (Go proxy)</h3>
+      <p>
+        The Go proxy builds a fresh request per call — browser headers, cookies, and the IAP JWT
+        are <strong>not</strong> forwarded. The backend receives:
+      </p>
+      <Table
+        headers={['Header', 'Value']}
+        rows={[
+          ['Authorization', 'Bearer <service-to-service ID token> (audience = backend URL, minted by the proxy, cached 50 min)'],
+          ['X-Stackramp-User-Email', 'The IAP-authenticated user\'s email — from X-Goog-Authenticated-User-Email with the accounts.google.com: prefix stripped'],
+          ['X-Stackramp-User-Id', 'The user\'s stable Google account ID — from X-Goog-Authenticated-User-Id, prefix stripped'],
+          ['Content-Type / Accept / Accept-Language / Content-Length', 'Forwarded from the browser request — everything else is dropped'],
+        ]}
+      />
+      <p>
+        Query strings and request bodies pass through unchanged; response headers come back as-is.
+        Because the backend has <code>--ingress=internal</code> and invoker-restricted IAM, the{' '}
+        <code>X-Stackramp-*</code> headers can only have been set by the proxy — treat them as the
+        authoritative user identity:
+      </p>
+      <Code>{`# backend (FastAPI example)
+@app.get("/api/me")
+def me(request: Request):
+    return {"email": request.headers.get("X-Stackramp-User-Email")}`}</Code>
+
+      <h3>Permissive orgs (nginx proxy)</h3>
+      <p>
+        nginx forwards the browser request mostly as-is, so the backend sees IAP's raw headers
+        instead:
+      </p>
+      <Table
+        headers={['Header', 'Value']}
+        rows={[
+          ['X-Goog-Authenticated-User-Email', 'accounts.google.com:user@yourdomain.com — strip the prefix yourself'],
+          ['X-Goog-Authenticated-User-Id', 'accounts.google.com:<numeric account id>'],
+          ['X-Goog-Iap-Jwt-Assertion', 'The signed IAP JWT — verify this if you need cryptographic proof of identity'],
+          ['X-Real-IP / X-Forwarded-For / X-Forwarded-Proto', 'Standard proxy headers added by nginx'],
+        ]}
+      />
+
+      <Callout type="info">
+        <strong>Portable backends</strong> should check <code>X-Stackramp-User-Email</code> first
+        and fall back to <code>X-Goog-Authenticated-User-Email</code> (stripping the{' '}
+        <code>accounts.google.com:</code> prefix) so the same code runs on either org type.
+      </Callout>
+
+      <Callout type="warning">
+        <strong>Cookies don't reach the backend</strong> on the Go proxy path — the fresh request
+        drops them. Keep session state in the identity headers or tokens your frontend passes
+        explicitly in forwarded headers.
+      </Callout>
+
       <h2>Access control</h2>
       <Table
         headers={['STACKRAMP_IAP_DOMAIN', 'Who can access']}

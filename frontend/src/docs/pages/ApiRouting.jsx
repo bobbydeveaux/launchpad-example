@@ -46,6 +46,12 @@ https://my-app.yourdomain.com/api/...    → Cloud Run (backend, via identity to
         The Go proxy handles this transparently — your frontend code still uses the same
         relative <code>/api/</code> paths.
       </Callout>
+
+      <p>
+        The proxy rewrites headers on the way through — your backend receives the authenticated
+        user's identity as <code>X-Stackramp-User-Email</code> / <code>X-Stackramp-User-Id</code>.
+        See <a href="/docs/sso">SSO via IAP → Identity &amp; proxy headers</a> for the full contract.
+      </p>
     </DocPage>
   )
 }
