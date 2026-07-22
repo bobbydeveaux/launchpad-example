@@ -63,15 +63,16 @@ export default function Troubleshooting() {
           use the VPC-based auth path.</li>
       </ol>
 
-      <h2>MCP server returning 401/403 to a machine consumer</h2>
+      <h2>Machine backend / MCP server returning 401/403</h2>
       <p>
-        Check these in order: the consumer's SA email is listed in{' '}
-        <code>mcp.allowed_service_accounts</code> (and shows up in the service's{' '}
-        <code>MCP_SERVICE_ACCOUNTS</code> env var); the ID token's audience is the MCP service's
-        exact Cloud Run URL; and for private servers, the caller's identity is covered by the{' '}
-        <code>roles/run.invoker</code> binding. If external OAuth clients (Claude Code, MCP
-        Inspector) can't reach the endpoint at all, the server needs <code>mcp.public: true</code>{' '}
-        for OAuth discovery.
+        Check these in order: the caller's SA email is listed in{' '}
+        <code>allowed_service_accounts</code> (and shows up in the service's{' '}
+        <code>STACKRAMP_SERVICE_ACCOUNTS</code> env var — v1 apps read the deprecated{' '}
+        <code>MCP_SERVICE_ACCOUNTS</code> alias); the ID token's audience is the service's exact
+        Cloud Run URL; and for legacy private <code>mcp:</code> servers, the caller's identity is
+        covered by the <code>roles/run.invoker</code> binding. If external OAuth clients (Claude
+        Code, MCP Inspector) can't reach the endpoint at all, it needs{' '}
+        <code>access: public</code> for OAuth discovery.
       </p>
 
       <h2>Bootstrap: "Kubernetes cluster unreachable"</h2>

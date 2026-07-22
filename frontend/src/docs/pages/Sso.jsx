@@ -25,7 +25,7 @@ frontend:
 
 backend:
   language: python
-  sso: true`}</Code>
+  access: iap        # or the deprecated equivalent: sso: true`}</Code>
 
       <h2>Architecture</h2>
       <p>

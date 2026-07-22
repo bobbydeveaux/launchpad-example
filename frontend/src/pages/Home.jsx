@@ -153,7 +153,7 @@ jobs:
           <div className="card">
             <div className="card-icon">🪣</div>
             <h4>GCS Storage</h4>
-            <p>Set <code>storage: gcs</code> to get a provisioned Cloud Storage bucket with the bucket name injected as <code>GCS_BUCKET_NAME</code>.</p>
+            <p>Set <code>storage: gcs</code> to get a provisioned Cloud Storage bucket with the bucket name injected as <code>GCS_BUCKET</code> — or declare named buckets with signed URLs and lifecycle rules.</p>
           </div>
           <div className="card">
             <div className="card-icon">🔒</div>

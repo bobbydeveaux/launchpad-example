@@ -52,7 +52,7 @@ domain: my-app.yourdomain.com # optional custom domain
 database: false               # false | postgres | mysql
 migrate: false                # false | true (language default) | "custom command"
 
-storage: false                # false | gcs`}</Code>
+storage: false                # false | gcs | block form with named buckets`}</Code>
 
       <p>
         An app must declare at least one of <code>frontend</code>, <code>backend</code>,{' '}
@@ -67,7 +67,7 @@ storage: false                # false | gcs`}</Code>
           ['domain', 'string', '(none)', 'Custom domain — omit for .web.app URL'],
           ['database', 'string', 'false', 'false, postgres, or mysql'],
           ['migrate', 'string | boolean', 'false', 'Migration command run via Cloud Run Job before deploy. true = language default.'],
-          ['storage', 'string', 'false', 'false or gcs'],
+          ['storage', 'string | object', 'false', 'false, gcs, or a buckets: block with named buckets'],
         ]}
       />
 
@@ -116,7 +116,7 @@ storage: false                # false | gcs`}</Code>
         ]}
       />
 
-      <h2>MCP fields</h2>
+      <h2>MCP fields (deprecated block)</h2>
       <Table
         headers={['Field', 'Type', 'Default', 'Description']}
         rows={[

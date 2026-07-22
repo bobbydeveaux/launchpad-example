@@ -23,7 +23,8 @@ export default function EnvVars() {
       <Table
         headers={['Variable', 'When', 'Description']}
         rows={[
-          ['GCS_BUCKET', 'storage: gcs', 'GCS bucket name for the environment'],
+          ['GCS_BUCKET', 'storage: gcs', 'GCS bucket name for the environment (legacy scalar form)'],
+          ['BUCKET_<NAME>', 'storage.buckets', 'One per named bucket — e.g. buckets entry "downloads" injects BUCKET_DOWNLOADS'],
           ['DATABASE_URL', 'database: postgres', 'Full DSN connection string (mounted from Secret Manager)'],
           ['BACKEND_URL', 'sso: true + has backend', 'Backend Cloud Run URL — injected into SSO frontend for the Go proxy to route /api/* calls'],
           ['MCP_URL', 'mcp: block + has backend', 'The MCP service\'s Cloud Run URL — injected into the backend'],

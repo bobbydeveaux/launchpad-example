@@ -66,9 +66,11 @@ backends:
       </Callout>
 
       <Callout type="info">
-        An app can be <strong>MCP-only</strong> — a <code>backends:</code> array (or legacy{' '}
-        <code>mcp:</code> block) without <code>frontend</code> or <code>backend</code> is a valid{' '}
-        <code>stackramp.yaml</code>.
+        An app can be <strong>MCP-only</strong> — an <code>mcp:</code> block without{' '}
+        <code>frontend</code> or <code>backend</code> is a valid <code>stackramp.yaml</code>. Note
+        the deployable guard doesn't count <code>backends:</code> alone yet — a backends-only app
+        also needs one of <code>frontend</code>, <code>backend</code>, <code>mcp</code>, or{' '}
+        <code>kubernetes</code>.
       </Callout>
 
       <h2>What gets provisioned</h2>

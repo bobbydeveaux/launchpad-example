@@ -13,7 +13,7 @@ export default function PrPreviews() {
         <li>Backend deploys as a Cloud Run service named <code>{'<app>-pr-<number>'}</code></li>
         <li>Frontend deploys to a Firebase preview channel scoped to <code>pr-{'<number>'}</code></li>
         <li>Firebase wires <code>/api/**</code> rewrites to the PR-scoped Cloud Run service</li>
-        <li>MCP servers deploy as <code>{'<app>-mcp-pr-<number>'}</code></li>
+        <li>MCP servers deploy as <code>{'<app>-mcp-pr-<number>'}</code>; machine backends as <code>{'<app>-<name>-pr-<number>'}</code></li>
         <li>Kubernetes apps install into their own namespace, <code>{'<namespace>-pr-<number>'}</code></li>
         <li>A comment is posted on the PR with the preview URL</li>
       </ul>

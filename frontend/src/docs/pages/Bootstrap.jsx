@@ -93,7 +93,7 @@ cp terraform.tfvars.example dev.tfvars
           ['postgres_tier', 'string', 'db-f1-micro', 'Cloud SQL machine tier'],
           ['iap_allowed_domain', 'string', '(none)', 'Google Workspace domain for IAP access control'],
           ['platform_secrets', 'list(string)', '[]', 'Secret names to create in Secret Manager'],
-          ['machine_consumers', 'list(string)', '[]', 'Service accounts for systems that call apps\' MCP servers (e.g. ["agentops"])'],
+          ['machine_consumers', 'list(string)', '[]', 'Service accounts for systems that call apps\' machine backends / MCP servers (e.g. ["agentops"])'],
           ['machine_consumer_keys', 'bool', 'false', 'Store a JSON key per machine consumer in Secret Manager (machine-consumer-<name>-key)'],
           ['enable_gke', 'bool', 'false', 'Provision shared GKE cluster + External Secrets Operator for kubernetes: apps'],
           ['gke_zone', 'string', 'europe-west1-b', 'GKE cluster zone — must be a zone, not a region'],

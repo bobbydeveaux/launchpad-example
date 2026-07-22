@@ -17,8 +17,9 @@ export default function Dockerfile() {
         <li><strong>Rust</strong> — multi-stage build, compiles a release binary</li>
       </ul>
       <p>
-        The same convention applies to MCP servers: a <code>Dockerfile</code> in the{' '}
-        <code>mcp.dir</code> directory overrides the platform one for the MCP service.
+        The same convention applies to every service: a <code>Dockerfile</code> in a{' '}
+        <code>backends[]</code> entry's <code>dir</code> (or the legacy <code>mcp.dir</code>)
+        overrides the platform one for that service.
       </p>
 
       <h2>Custom Dockerfile</h2>

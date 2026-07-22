@@ -44,7 +44,7 @@ frontend:
 
 backend:
   language: go
-  sso: true
+  access: iap        # humans via Google IAP (sso: true also works)
 
 database: postgres
 storage: gcs`}</Code>
@@ -55,10 +55,13 @@ storage: gcs`}</Code>
 backend:
   language: python
 
-mcp:
-  language: go
-  allowed_service_accounts:
-    - agentops@my-project.iam.gserviceaccount.com
+backends:
+  - name: mcp
+    language: go
+    dir: mcp
+    access: machine
+    allowed_service_accounts:
+      - agentops@my-project.iam.gserviceaccount.com
 
 database: postgres`}</Code>
 
