@@ -19,38 +19,56 @@ export default function Mcp() {
         (<code>MCP_SERVICE_ACCOUNTS</code> is still injected as a deprecated alias).
       </Callout>
 
-      <h2>Configuration</h2>
+      <h2>Configuration (v2)</h2>
+      <p>
+        An MCP server is a backend with an access posture — declare it in the{' '}
+        <code>backends:</code> array. Use <code>access: machine</code> when it's called by service
+        accounts (agents, workers), or <code>access: public</code> when human clients (Claude Code,
+        Claude web) need MCP OAuth discovery and your app enforces auth itself. Declare both if you
+        serve both kinds of caller — same <code>dir</code>, so it's still one build:
+      </p>
       <Code>{`name: my-app
 
 backend:
   language: python
 
-mcp:
+backends:
+  - name: mcp                 # deploys as my-app-mcp-{env}
+    language: go
+    dir: mcp                  # custom Dockerfile here overrides the platform one
+    access: machine           # SA callers — or 'public' for OAuth discovery
+    allowed_service_accounts:
+      - agentops@my-project.iam.gserviceaccount.com`}</Code>
+      <p>
+        Fields (<code>name</code>, <code>language</code>, <code>dir</code>, <code>port</code>,{' '}
+        <code>memory</code>, <code>cpu</code>, <code>access</code>,{' '}
+        <code>allowed_service_accounts</code>) are documented in{' '}
+        <a href="/docs/access-model">Backends &amp; Access Model</a>.
+      </p>
+
+      <h3>Legacy mcp: block (deprecated)</h3>
+      <p>
+        The v1 form still works — it normalises to a machine backend on dir <code>mcp</code>:
+      </p>
+      <Code>{`mcp:
   language: go                # go | python | node | rust (default: go)
   dir: mcp                    # source directory (default: mcp)
   port: 8080                  # listen port (default: 8080)
   memory: 256Mi               # Cloud Run memory (default: 256Mi)
   cpu: "1"                    # Cloud Run CPU (default: 1)
-  public: false               # allow unauthenticated invocation (default: false)
-  allowed_service_accounts:   # machine consumers allowed to call this server
+  public: false               # v2: access: public
+  allowed_service_accounts:   # v2: access: machine + this list
     - agentops@my-project.iam.gserviceaccount.com`}</Code>
-
-      <Table
-        headers={['Field', 'Type', 'Default', 'Description']}
-        rows={[
-          ['language', 'string', 'go', 'go, python, node, or rust'],
-          ['dir', 'string', 'mcp', 'Source directory — custom Dockerfile here overrides the platform one'],
-          ['port', 'number', '8080', 'Listen port'],
-          ['memory', 'string', '256Mi', 'Cloud Run memory limit'],
-          ['cpu', 'string', '1', 'Cloud Run vCPU count'],
-          ['public', 'boolean', 'false', 'Deploy with --no-invoker-iam-check for external OAuth clients'],
-          ['allowed_service_accounts', 'list', '[]', 'Machine consumer SA emails, injected as MCP_SERVICE_ACCOUNTS'],
-        ]}
-      />
+      <Callout type="warning">
+        The legacy block conflates two consumers: <code>public: true</code> exists for human OAuth
+        discovery, <code>allowed_service_accounts</code> for machine callers. In v2 those are
+        distinct postures — pick the one your consumers actually use, or declare two backends.
+      </Callout>
 
       <Callout type="info">
-        An app can be <strong>MCP-only</strong> — <code>mcp</code> without <code>frontend</code> or{' '}
-        <code>backend</code> is a valid <code>stackramp.yaml</code>.
+        An app can be <strong>MCP-only</strong> — a <code>backends:</code> array (or legacy{' '}
+        <code>mcp:</code> block) without <code>frontend</code> or <code>backend</code> is a valid{' '}
+        <code>stackramp.yaml</code>.
       </Callout>
 
       <h2>What gets provisioned</h2>
@@ -60,7 +78,8 @@ mcp:
         <li>Platform secrets (labelled <code>platform-inject=true</code>) mounted like any other service</li>
         <li>If the platform uses private Cloud SQL, the VPC connector is attached with{' '}
           <code>--vpc-egress=all-traffic</code> so the MCP server can reach the database and internal backends</li>
-        <li>The backend service gets an <code>MCP_URL</code> env var pointing at the MCP service's Cloud Run URL</li>
+        <li>With the legacy <code>mcp:</code> block, the backend service gets an <code>MCP_URL</code>{' '}
+          env var pointing at the MCP service's Cloud Run URL (not injected for <code>backends:</code> entries)</li>
       </ul>
       <p>
         MCP services are not mapped to custom domains — clients use the Cloud Run URL directly,
@@ -68,22 +87,30 @@ mcp:
       </p>
 
       <h2>Auth model</h2>
-      <p>There are two modes, controlled by <code>mcp.public</code>:</p>
+      <p>The access posture decides who can call the server and how they prove it:</p>
 
-      <h3>Private (default)</h3>
+      <h3>access: machine</h3>
       <p>
-        The service deploys with <code>--no-allow-unauthenticated</code>. Callers must present a
-        Google-signed ID token, and <code>roles/run.invoker</code> is granted to your{' '}
-        <code>iap_allowed_domain</code> (from the bootstrap). Machine consumers authenticate the same
-        way — see below.
+        Deployed with <code>--no-invoker-iam-check</code> — network-reachable, with auth enforced{' '}
+        <strong>in-app</strong>: your server verifies Google-signed ID tokens against the{' '}
+        <code>STACKRAMP_SERVICE_ACCOUNTS</code> allow-list (see below). Stateless verification means
+        agent access survives scale-to-zero.
       </p>
 
-      <h3>Public</h3>
+      <h3>access: public</h3>
       <p>
-        <code>public: true</code> deploys with <code>--no-invoker-iam-check</code>. This makes the
-        endpoint reachable by external OAuth clients (Claude Code, Claude web, MCP Inspector) — which
-        is required for MCP OAuth discovery — while auth is enforced <strong>in-app</strong> by your
+        Same deploy flags, but no allow-list — for endpoints external OAuth clients (Claude Code,
+        Claude web, MCP Inspector) must reach for MCP OAuth discovery, with auth enforced by your
         MCP server's own OAuth flow.
+      </p>
+
+      <h3>Legacy mcp: private (default of the deprecated block)</h3>
+      <p>
+        The old <code>mcp:</code> block without <code>public: true</code> deploys with{' '}
+        <code>--no-allow-unauthenticated</code> and grants <code>roles/run.invoker</code> to your{' '}
+        <code>iap_allowed_domain</code> (from the bootstrap) — Cloud Run itself rejects callers
+        without a Google-signed ID token. v2 machine backends don't use this IAM gate; they verify
+        tokens in-app instead.
       </p>
       <Callout type="info">
         <strong>Why not --allow-unauthenticated?</strong> That flag adds an <code>allUsers</code> IAM
@@ -107,17 +134,21 @@ machine_consumer_keys = true          # optional: store a JSON key in Secret Man
         reviewable in git:
       </p>
       <Code>{`# stackramp.yaml
-mcp:
-  allowed_service_accounts:
-    - agentops@my-project.iam.gserviceaccount.com`}</Code>
+backends:
+  - name: mcp
+    dir: mcp
+    access: machine
+    allowed_service_accounts:
+      - agentops@my-project.iam.gserviceaccount.com`}</Code>
       <p>
-        The list is injected into the MCP service as <code>MCP_SERVICE_ACCOUNTS</code>{' '}
-        (semicolon-separated). Your server should:
+        The list is injected into the service as <code>STACKRAMP_SERVICE_ACCOUNTS</code>{' '}
+        (semicolon-separated; also as the deprecated alias <code>MCP_SERVICE_ACCOUNTS</code>).
+        Your server should:
       </p>
       <ol>
         <li>Verify the <code>Authorization: Bearer</code> ID token against Google's public keys</li>
         <li>Check the token's <code>aud</code> matches the service's own URL</li>
-        <li>Check the token's <code>email</code> is in the <code>MCP_SERVICE_ACCOUNTS</code> allow-list</li>
+        <li>Check the token's <code>email</code> is in the <code>STACKRAMP_SERVICE_ACCOUNTS</code> allow-list</li>
       </ol>
 
       <h3>Consumer-side authentication</h3>
