@@ -20,6 +20,7 @@ export default function Overview() {
         <div className="doc-grid-item">✓ Cloud SQL (Postgres) with Secret Manager</div>
         <div className="doc-grid-item">✓ Secret injection from GCP Secret Manager</div>
         <div className="doc-grid-item">✓ Custom domains with automatic SSL</div>
+        <div className="doc-grid-item">✓ Multiple backends per app with access postures (iap / machine / public / internal)</div>
         <div className="doc-grid-item">✓ MCP servers as first-class Cloud Run services</div>
         <div className="doc-grid-item">✓ Helm releases on a shared GKE cluster</div>
         <div className="doc-grid-item">✓ Change detection — only deploys what changed</div>

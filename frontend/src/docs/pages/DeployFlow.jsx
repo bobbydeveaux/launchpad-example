@@ -30,6 +30,8 @@ export default function DeployFlow() {
         │
         ▼
   deploy-backend → deploy-frontend
+  deploy-machine (one per backends[] entry
+                  with access: machine|public)
   deploy-mcp (if mcp:)
   deploy-kubernetes (if kubernetes:)
         │

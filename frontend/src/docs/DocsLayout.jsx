@@ -14,6 +14,7 @@ import Sso from './pages/Sso.jsx'
 import Storage from './pages/Storage.jsx'
 import Secrets from './pages/Secrets.jsx'
 import Database from './pages/Database.jsx'
+import AccessModel from './pages/AccessModel.jsx'
 import Mcp from './pages/Mcp.jsx'
 import Kubernetes from './pages/Kubernetes.jsx'
 import StackrampYaml from './pages/StackrampYaml.jsx'
@@ -34,6 +35,7 @@ const pageComponents = {
   'storage': Storage,
   'secrets': Secrets,
   'database': Database,
+  'access-model': AccessModel,
   'mcp': Mcp,
   'kubernetes': Kubernetes,
   'stackramp-yaml': StackrampYaml,

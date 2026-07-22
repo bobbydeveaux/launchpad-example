@@ -8,6 +8,12 @@ export default function Sso() {
         Google Identity-Aware Proxy (IAP). Only authenticated users from your domain can access the app.
       </p>
 
+      <Callout type="info">
+        <strong>v2:</strong> on backends, <code>sso: true</code> is sugar for{' '}
+        <code>access: iap</code> — the explicit form is preferred going forward. See{' '}
+        <a href="/docs/access-model">Backends &amp; Access Model</a>.
+      </Callout>
+
       <h2>Configuration</h2>
       <Code>{`name: my-app
 

@@ -27,7 +27,8 @@ export default function EnvVars() {
           ['DATABASE_URL', 'database: postgres', 'Full DSN connection string (mounted from Secret Manager)'],
           ['BACKEND_URL', 'sso: true + has backend', 'Backend Cloud Run URL — injected into SSO frontend for the Go proxy to route /api/* calls'],
           ['MCP_URL', 'mcp: block + has backend', 'The MCP service\'s Cloud Run URL — injected into the backend'],
-          ['MCP_SERVICE_ACCOUNTS', 'mcp.allowed_service_accounts', 'Semicolon-separated machine consumer SA emails — injected into the MCP service for in-app token validation'],
+          ['STACKRAMP_SERVICE_ACCOUNTS', 'access: machine', 'Semicolon-separated SA emails allowed to call the service — verify ID tokens against this list in-app'],
+          ['MCP_SERVICE_ACCOUNTS', 'access: machine / mcp block', 'Deprecated alias of STACKRAMP_SERVICE_ACCOUNTS — same value, kept for v1 apps'],
         ]}
       />
 

@@ -24,9 +24,18 @@ backend:
   memory: 512Mi               # Cloud Run memory (default: 512Mi)
   cpu: "1"                    # Cloud Run CPU (default: 1)
   min_instances: 0            # min warm instances (default: 0)
-  sso: false                  # put behind Google IAP
+  access: iap                 # iap | machine | public | internal (v2)
+  sso: false                  # deprecated sugar for access: iap
 
-mcp:                          # optional — deploy an MCP server (see MCP Servers)
+backends:                     # optional — extra services, each with its own access posture
+  - name: ingest              # deploys as {app}-ingest-{env}
+    language: go
+    dir: backend              # same dir as backend: ⇒ one build, two services
+    access: machine
+    allowed_service_accounts:
+      - caller@project.iam.gserviceaccount.com
+
+mcp:                          # deprecated sugar — a machine backend on dir mcp (see MCP Servers)
   language: go                # go | python | node | rust
   dir: mcp                    # source directory (default: mcp)
   public: false               # open endpoint for MCP OAuth discovery
@@ -83,7 +92,27 @@ storage: false                # false | gcs`}</Code>
           ['memory', 'string', '512Mi', 'Cloud Run memory limit'],
           ['cpu', 'string', '1', 'Cloud Run vCPU count'],
           ['min_instances', 'number', '0', 'Minimum warm Cloud Run instances (0 = scale to zero)'],
-          ['sso', 'boolean', 'false', 'Put behind IAP'],
+          ['access', 'string', 'public (iap if sso: true)', 'v2 access posture: iap, machine, public, or internal'],
+          ['allowed_service_accounts', 'list', '[]', 'For access: machine — SA emails allowed to call this backend'],
+          ['sso', 'boolean', 'false', 'Deprecated sugar for access: iap'],
+        ]}
+      />
+
+      <h2>backends[] fields</h2>
+      <p>
+        Extra services beyond the primary backend, each deployed as{' '}
+        <code>{'{app}-{name}-{env}'}</code>. Entries sharing a <code>dir</code> build one image.
+        See <a href="/docs/access-model">Backends &amp; Access Model</a>.
+      </p>
+      <Table
+        headers={['Field', 'Type', 'Default', 'Description']}
+        rows={[
+          ['name', 'string', '(required)', 'Service name suffix'],
+          ['language', 'string', 'go', 'go, python, node, or rust'],
+          ['dir', 'string', 'backend', 'Source directory — shared dir ⇒ shared image'],
+          ['port / memory / cpu / min_instances', '—', '8080 / 512Mi / 1 / 0', 'As per backend'],
+          ['access', 'string', 'public (iap if sso: true)', 'iap, machine, public, or internal'],
+          ['allowed_service_accounts', 'list', '[]', 'For access: machine'],
         ]}
       />
 

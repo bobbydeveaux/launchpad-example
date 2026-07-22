@@ -10,6 +10,15 @@ export default function Mcp() {
         no IAP, no <code>allUsers</code> bindings.
       </p>
 
+      <Callout type="warning">
+        <strong>v2:</strong> <code>mcp:</code> is now deprecated sugar. An MCP server was never a
+        special kind of service — it's a backend with <code>access: machine</code> (SA callers) or{' '}
+        <code>access: public</code> (OAuth discovery). Existing <code>mcp:</code> blocks keep
+        working, but prefer declaring it in <a href="/docs/access-model">the backends array</a>{' '}
+        going forward. The allow-list env var is now <code>STACKRAMP_SERVICE_ACCOUNTS</code>{' '}
+        (<code>MCP_SERVICE_ACCOUNTS</code> is still injected as a deprecated alias).
+      </Callout>
+
       <h2>Configuration</h2>
       <Code>{`name: my-app
 
